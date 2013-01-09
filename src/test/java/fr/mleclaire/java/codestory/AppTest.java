@@ -1,4 +1,4 @@
-package fr.mleclaire.java;
+package fr.mleclaire.java.codestory;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
