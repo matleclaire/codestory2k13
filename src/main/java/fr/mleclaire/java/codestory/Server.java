@@ -1,5 +1,4 @@
 package fr.mleclaire.java.codestory;
-
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -35,6 +34,9 @@ public class Server {
     public void start(String name, int port) throws IOException {
         httpServer = GrizzlyServerFactory.createHttpServer(String.format("http://%s:%d/", name, port));
         httpServer.start();
+
+        // To log request from client
+        TrafficMonitor.log(httpServer);
     }
 
     public void stop() {
