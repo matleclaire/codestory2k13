@@ -11,8 +11,7 @@ public class App
 {
     public static void main( String[] args ) throws IOException {
         Server serv = new Server();
-       // serv.start("codestory2k13.miniserv.fr", 7070);
-        serv.start("localhost", 7070);
+        serv.start("codestory2k13.miniserv.fr", 7070);
         System.out.print("Press any key to quit...");
         System.in.read();
         serv.stop();
