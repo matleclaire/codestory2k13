@@ -50,4 +50,9 @@ public class AppTest {
         assertThat(result).isEqualTo("OUI");
     }
 
+    @Test
+    public void should_confirm_happiness() {
+        String result = service.path("/").queryParam("q","Es tu heureux de participer(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("OUI");
+    }
 }
