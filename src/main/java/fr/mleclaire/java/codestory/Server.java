@@ -17,6 +17,7 @@ import java.io.IOException;
 public class Server {
 
     private static final String EMAIL_PARAM = "Quelle est ton adresse email";
+    private static final String MAILING_LIST_PARAM = "Es+tu+abonne+a+la+mailing+list(OUI/NON)";
 
     private HttpServer httpServer;
    

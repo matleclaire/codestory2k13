@@ -41,8 +41,13 @@ public class AppTest {
     @Test
     public void should_show_email() {
         String result = service.path("/").queryParam("q","Quelle est ton adresse email").accept("text/plain").get(String.class);
-
         assertThat(result).isEqualTo("mat.leclaire@gmail.com");
+    }
+
+    @Test
+    public void should_confirm_mailing_list_subscription() {
+        String result = service.path("/").queryParam("q","Es tu abonne a la mailing list(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("OUI");
     }
 
 }
