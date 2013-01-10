@@ -16,7 +16,7 @@ import static org.fest.assertions.Assertions.assertThat;
 public class AppTest {
 
     private final static String HOSTNAME = "localhost";
-    private final static int PORT = 7070;
+    private final static int PORT = 7071;
 
     private Server server;
     WebResource service;
