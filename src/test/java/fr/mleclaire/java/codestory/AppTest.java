@@ -68,4 +68,10 @@ public class AppTest {
         ClientResponse response = service.path("/").post(ClientResponse.class, "fake challenge");
         assertThat(response.getStatus()).isEqualTo(200);
     }
+
+    @Test
+    public void should_answer_no() {
+        String result = service.path("/").queryParam("q","Est ce que tu reponds toujours oui(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("NON");
+    }
 }
