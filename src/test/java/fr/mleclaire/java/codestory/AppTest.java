@@ -1,6 +1,7 @@
 package fr.mleclaire.java.codestory;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -54,5 +55,17 @@ public class AppTest {
     public void should_confirm_happiness() {
         String result = service.path("/").queryParam("q","Es tu heureux de participer(OUI/NON)").accept("text/plain").get(String.class);
         assertThat(result).isEqualTo("OUI");
+    }
+
+    @Test
+    public void should_accept_POST_challenge() {
+        String result = service.path("/").queryParam("q","Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("OUI");
+    }
+
+    @Test
+    public void should_receive_POST_challenge() {
+        ClientResponse response = service.path("/").post(ClientResponse.class, "fake challenge");
+        assertThat(response.getStatus()).isEqualTo(200);
     }
 }
