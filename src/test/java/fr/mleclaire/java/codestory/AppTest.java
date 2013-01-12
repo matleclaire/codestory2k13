@@ -66,7 +66,7 @@ public class AppTest {
     @Test
     public void should_receive_POST_challenge() {
         ClientResponse response = service.path("/").post(ClientResponse.class, "fake challenge");
-        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.getStatus()).isEqualTo(201);
     }
 
     @Test
