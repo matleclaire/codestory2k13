@@ -63,7 +63,7 @@ public class AppTest {
 
     @Test
     public void should_receive_POST_challenge() {
-        ClientResponse response = service.path("/").post(ClientResponse.class, "fake challenge");
+        ClientResponse response = service.path("/enonce/1").type("application/x-www-form-urlencoded").post(ClientResponse.class, "fake challenge");
         assertThat(response.getStatus()).isEqualTo(201);
     }
 

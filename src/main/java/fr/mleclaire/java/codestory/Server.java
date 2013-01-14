@@ -46,16 +46,17 @@ public class Server {
 
 
     @POST
-    @Consumes("text/plain")
-    public Response acceptChallenge(String content) {
-        File newTextFile = new File("challenge.md");
+    @Path("enonce/{id}")
+    @Consumes("application/x-www-form-urlencoded")
+    public Response acceptChallenge(String content, @PathParam("id") int id) {
+        File newTextFile = new File("challenge"+id+".md");
         try {
             FileWriter fileWriter = new FileWriter(newTextFile);
             fileWriter.write(content);
             fileWriter.close();
             return Response.status(201).build();
         } catch (IOException e) {
-            logger.error("failed to save challenge in a file",e);
+            logger.debug("failed to save challenge in a file",e);
         }
         return Response.status(500).build();
     }

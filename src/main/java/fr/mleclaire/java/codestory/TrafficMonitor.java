@@ -37,7 +37,7 @@ public class TrafficMonitor {
 
             public void onDataSentEvent(Connection connection, Buffer buffer) {
                 // Log outgoing traffic
-                //logger.debug("Response :\n{}",buffer.toStringContent()); 
+                logger.debug("Response :\n{}",buffer.toStringContent());
             }
         });
         
