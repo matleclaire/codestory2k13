@@ -78,6 +78,7 @@ public class AppTest {
     @Test
     public void should_change_cents() {
         String result = service.path("/scalaskel/change/7").accept("application/json").get(String.class);
-        assertThat(result.trim()).isEqualTo("[{\"foo\":7},{\"bar\":1}]");
+        // Test both ways
+        assertThat(result.trim()).isIn("[{\"foo\":7},{\"bar\":1}]","[{\"bar\":1},{\"foo\":7}]");
     }
 }
