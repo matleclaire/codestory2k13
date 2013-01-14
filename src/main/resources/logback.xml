@@ -18,7 +18,7 @@
     <root level="DEBUG">
         <appender-ref ref="FILE" />
     </root>
-    <root level="ERROR">
+    <root level="SEVERE">
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </root>

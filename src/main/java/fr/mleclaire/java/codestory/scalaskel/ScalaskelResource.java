@@ -1,0 +1,19 @@
+package fr.mleclaire.java.codestory.scalaskel;
+
+
+import javax.ws.rs.*;
+import java.util.Collection;
+
+@Path("scalaskel")
+public class ScalaskelResource {
+
+    @GET
+    @Path("change/{cents}")
+    @Produces("application/json")
+    public Collection<Currency> change(@PathParam("cents") int cents) {
+        if (cents > 0 && cents <=100) {
+            Currency c = new Currency(cents);
+            return Currency.exchange(c);
+        } else return null;
+    }
+}

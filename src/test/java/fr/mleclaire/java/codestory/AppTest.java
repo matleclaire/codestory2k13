@@ -74,4 +74,10 @@ public class AppTest {
         String result = service.path("/").queryParam("q","Est ce que tu reponds toujours oui(OUI/NON)").accept("text/plain").get(String.class);
         assertThat(result).isEqualTo("NON");
     }
+
+    @Test
+    public void should_change_cents() {
+        String result = service.path("/scalaskel/change/7").accept("application/json").get(String.class);
+        assertThat(result.trim()).isEqualTo("[{\"foo\":7},{\"bar\":1}]");
+    }
 }
