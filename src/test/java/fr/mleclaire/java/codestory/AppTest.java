@@ -5,9 +5,7 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -19,11 +17,11 @@ public class AppTest {
     private final static String HOSTNAME = "localhost";
     private final static int PORT = 7071;
 
-    private Server server;
-    WebResource service;
+    private static Server server;
+    private static WebResource service;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void oneTimeSetUp() throws Exception {
         // Starting server
         server = new Server();
         server.start(HOSTNAME, PORT);
@@ -34,8 +32,8 @@ public class AppTest {
         service = client.resource(String.format("http://%s:%d/", HOSTNAME, PORT));
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass
+    public static void oneTimeTearDown() {
         server.stop();
     }
 
@@ -79,6 +77,6 @@ public class AppTest {
     public void should_change_cents() {
         String result = service.path("/scalaskel/change/7").accept("application/json").get(String.class);
         // Test both ways
-        assertThat(result.trim()).isIn("[{\"foo\":7},{\"bar\":1}]","[{\"bar\":1},{\"foo\":7}]");
+        assertThat(result.trim()).isIn("[{\"foo\":7},{\"bar\":1}]", "[{\"bar\":1},{\"foo\":7}]");
     }
 }
