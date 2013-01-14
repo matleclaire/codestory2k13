@@ -22,11 +22,14 @@ public class Server {
 
     static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    private static final String EMAIL_PARAM         = "Quelle est ton adresse email";
-    private static final String MAILING_LIST_PARAM  = "Es tu abonne a la mailing list(OUI/NON)";
-    private static final String HAPPY_PARAM         = "Es tu heureux de participer(OUI/NON)";
-    private static final String CHALLENGE_PARAM     = "Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)";
-    private static final String TROLL_PARAM         = "Est ce que tu reponds toujours oui(OUI/NON)";
+    private static final String EMAIL_PARAM             = "Quelle est ton adresse email";
+    private static final String MAILING_LIST_PARAM      = "Es tu abonne a la mailing list(OUI/NON)";
+    private static final String HAPPY_PARAM             = "Es tu heureux de participer(OUI/NON)";
+    private static final String CHALLENGE_PARAM         = "Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)";
+    private static final String TROLL_PARAM             = "Est ce que tu reponds toujours oui(OUI/NON)";
+    private static final String CONFIRM_SCALASKEL_PARAM = "As tu bien recu le premier enonce(OUI/NON)";
+
+
     private HttpServer httpServer;
    
     @GET
@@ -36,7 +39,8 @@ public class Server {
             return Response.ok("mat.leclaire@gmail.com", "text/plain").build();
          else if (q.equals(MAILING_LIST_PARAM)
                  || q.equals(HAPPY_PARAM)
-                 || q.equals(CHALLENGE_PARAM))
+                 || q.equals(CHALLENGE_PARAM)
+                 || q.equals(CONFIRM_SCALASKEL_PARAM))
             return Response.ok("OUI","text/plain").build();
          else if (q.equals(TROLL_PARAM))
              return Response.ok("NON","text/plain").build();

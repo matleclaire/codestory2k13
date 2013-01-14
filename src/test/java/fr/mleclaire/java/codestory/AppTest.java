@@ -74,6 +74,12 @@ public class AppTest {
     }
 
     @Test
+    public void should_confirm_challenge_reception_challenge() {
+        String result = service.path("/").queryParam("q","As tu bien recu le premier enonce(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("OUI");
+    }
+
+    @Test
     public void should_change_cents() {
         String result = service.path("/scalaskel/change/7").accept("application/json").get(String.class);
         // Test both ways
