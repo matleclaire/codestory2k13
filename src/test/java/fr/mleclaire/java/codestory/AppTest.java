@@ -85,4 +85,10 @@ public class AppTest {
         // Test both ways
         assertThat(result.trim()).isIn("[{\"foo\":7},{\"bar\":1}]", "[{\"bar\":1},{\"foo\":7}]");
     }
+
+    @Test
+    public void should_add_one_and_one() {
+        String result = service.path("/").queryParam("q","1 1").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("2");
+    }
 }

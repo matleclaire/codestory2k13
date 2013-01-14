@@ -28,6 +28,7 @@ public class Server {
     private static final String CHALLENGE_PARAM         = "Es tu pret a recevoir une enonce au format markdown par http post(OUI/NON)";
     private static final String TROLL_PARAM             = "Est ce que tu reponds toujours oui(OUI/NON)";
     private static final String CONFIRM_SCALASKEL_PARAM = "As tu bien recu le premier enonce(OUI/NON)";
+    private static final String ONE_AND_ONE_PARAM       = "1 1";
 
 
     private HttpServer httpServer;
@@ -44,6 +45,8 @@ public class Server {
             return Response.ok("OUI","text/plain").build();
          else if (q.equals(TROLL_PARAM))
              return Response.ok("NON","text/plain").build();
+         else if (q.equals(ONE_AND_ONE_PARAM))
+             return Response.ok("2","text/plain").build();
          else
              return Response.ok(getClass().getResourceAsStream( "/web/index.html")).build();
     }
