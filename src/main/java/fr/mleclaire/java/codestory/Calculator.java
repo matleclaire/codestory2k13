@@ -8,16 +8,10 @@ import java.util.ArrayList;
 
 public class Calculator {
 
-    // To prevent bad characters
-    public final static String VALID_PATTERN = "([0-9+\\-*()\\./])*";
-
-
     public static BigDecimal compute(String exp)  {
         BigDecimal result = null ;
-        if (exp.matches(VALID_PATTERN)) {
-            Expression e = new Expression(exp);
-            result  = e.eval();
-        }
+        Expression e = new Expression(exp);
+        result  = e.eval();
         return result;
     }
 

@@ -20,15 +20,7 @@ public class Currency {
 
     // out - result
     @XmlElement
-    private Integer foo;
-    @XmlElement
-    private Integer bar;
-    @XmlElement
-    private Integer qix;
-    @XmlElement
-    private Integer baz;
-
-
+    private Integer foo, bar, qix, baz;
 
     public Currency(int cent) {
         this.cent = cent;
@@ -53,7 +45,7 @@ public class Currency {
         return exchange(c, RATE.length-1);
     }
 
-
+    // Recursive way
     private static List<Currency> exchange(Currency c, int ind) {
         List<Currency> result = new LinkedList<Currency>();
         // Stop condition
@@ -84,3 +76,4 @@ public class Currency {
         return result;
     }
 }
+
