@@ -92,5 +92,19 @@
             <artifactId>jersey-json</artifactId>
             <version>1.16</version>
         </dependency>
+        <!-- To load properties file easily -->
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+        <!-- eval math expressions -->
+        <dependency>
+            <groupId>net.java.dev.eval</groupId>
+            <artifactId>eval</artifactId>
+            <version>0.5</version>
+        </dependency>
+
     </dependencies>
 </project>

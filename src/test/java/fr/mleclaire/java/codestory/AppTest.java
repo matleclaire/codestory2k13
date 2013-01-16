@@ -91,4 +91,11 @@ public class AppTest {
         String result = service.path("/").queryParam("q","1 1").accept("text/plain").get(String.class);
         assertThat(result).isEqualTo("2");
     }
+
+    @Test
+    public void should_add_two_and_two() {
+        String result = service.path("/").queryParam("q","2 2").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("4");
+    }
+
 }
