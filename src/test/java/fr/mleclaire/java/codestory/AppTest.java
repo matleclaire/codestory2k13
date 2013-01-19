@@ -98,4 +98,10 @@ public class AppTest {
         assertThat(result).isEqualTo("4");
     }
 
+    @Test
+    public void should_compute() {
+        String result = service.path("/").queryParam("q","3/2").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("1,5");
+    }
+
 }

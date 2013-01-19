@@ -36,7 +36,7 @@ public class MainResource {
             return Response.ok(param.getString(q),"text/plain").build();
 
         } else if(format(q).matches(VALID_EXP_PATTERN)) {
-            return Response.ok(Calculator.compute(format(q)).toString().replace(".",","),"text/plain").build();
+            return Response.ok(Calculator.compute(format(q)),"text/plain").build();
 
         }else {
             return Response.ok(getClass().getResourceAsStream( "/web/index.html")).build();

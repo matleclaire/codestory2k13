@@ -8,11 +8,12 @@ import java.util.ArrayList;
 
 public class Calculator {
 
-    public static BigDecimal compute(String exp)  {
-        BigDecimal result = null ;
+    public static String compute(String exp)  {
+        String result = null ;
         Expression e = new Expression(exp);
-        result  = e.eval();
-        return result;
+        result  = e.eval().stripTrailingZeros().toString();
+
+        return result.replace(".",","); // format string
     }
 
 }
