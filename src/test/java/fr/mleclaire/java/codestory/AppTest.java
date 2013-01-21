@@ -104,4 +104,10 @@ public class AppTest {
         assertThat(result).isEqualTo("1,5");
     }
 
+    @Test
+    public void should_compute_again() {
+        String result = service.path("/").queryParam("q","6/2").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("3");
+    }
+
 }
