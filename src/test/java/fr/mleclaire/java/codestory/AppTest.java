@@ -62,7 +62,7 @@ public class AppTest {
     }
 
     @Test
-    public void should_receive_POST_challenge() {
+    public void should_receive_challenge_1() {
         ClientResponse response = service.path("/enonce/1").type("application/x-www-form-urlencoded").post(ClientResponse.class, "fake challenge");
         assertThat(response.getStatus()).isEqualTo(201);
     }
@@ -74,7 +74,7 @@ public class AppTest {
     }
 
     @Test
-    public void should_confirm_challenge_reception_challenge() {
+    public void should_confirm_challenge_reception_challenge_1() {
         String result = service.path("/").queryParam("q","As tu bien recu le premier enonce(OUI/NON)").accept("text/plain").get(String.class);
         assertThat(result).isEqualTo("OUI");
     }
@@ -110,4 +110,21 @@ public class AppTest {
         assertThat(result).isEqualTo("3");
     }
 
+    @Test
+    public void should_compute_without_exponent() {
+        String result = service.path("/").queryParam("q","As tu passe une bonne nuit malgre les bugs de l etape precedente(PAS_TOP/BOF/QUELS_BUGS)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("QUELS_BUGS");
+    }
+
+    @Test
+    public void should_receive_challenge_2() {
+        ClientResponse response = service.path("/enonce/1").type("application/x-www-form-urlencoded").post(ClientResponse.class, "fake challenge");
+        assertThat(response.getStatus()).isEqualTo(201);
+    }
+
+    @Test
+    public void should_confirm_challenge_reception_challenge_2() {
+        String result = service.path("/").queryParam("q","As tu bien recu le second enonce(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("OUI");
+    }
 }
