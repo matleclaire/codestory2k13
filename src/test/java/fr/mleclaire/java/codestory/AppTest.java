@@ -5,7 +5,12 @@ import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
+import fr.mleclaire.java.codestory.jajascript.Candidate;
+import fr.mleclaire.java.codestory.jajascript.Flight;
 import org.junit.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -127,4 +132,33 @@ public class AppTest {
         String result = service.path("/").queryParam("q","As tu bien recu le second enonce(OUI/NON)").accept("text/plain").get(String.class);
         assertThat(result).isEqualTo("OUI");
     }
+
+    @Test
+    public void should_optimize_simple_jajascript() {
+        String payload = "[ {\"VOL\": \"AF514\", \"DEPART\":0, \"DUREE\":5, \"PRIX\": 10} ]";
+        ClientResponse response = service.path("/jajascript/optimize").type("application/x-www-form-urlencoded").post(ClientResponse.class, payload);
+
+        String output = response.getEntity(String.class);
+        System.out.println(output);
+        assertThat(response.getStatus()).isEqualTo(201);
+        assertThat(output).isEqualTo("{\"gain\":10,\"path\":[\"AF514\"]}");
+    }
+
+
+    @Test
+    public void should_optimize_jajascript() {
+        String payload = "[ {\"VOL\": \"AF514\", \"DEPART\":0, \"DUREE\":5, \"PRIX\": 10}, \n" +
+                "{\"VOL\": \"CO5\", \"DEPART\":3, \"DUREE\":7, \"PRIX\": 14}, \n" +
+                "{\"VOL\": \"AF515\", \"DEPART\":5, \"DUREE\":9, \"PRIX\": 7}, \n" +
+                "{\"VOL\": \"BA01\", \"DEPART\":6, \"DUREE\":9, \"PRIX\": 8} ]";
+        ClientResponse response = service.path("/jajascript/optimize").type("application/x-www-form-urlencoded").post(ClientResponse.class, payload);
+
+        String output = response.getEntity(String.class);
+        System.out.println(output);
+        assertThat(response.getStatus()).isEqualTo(201);
+        assertThat(output).isEqualTo("{\"gain\":18,\"path\":[\"AF514\",\"BA01\"]}");
+    }
+
+
+
 }
