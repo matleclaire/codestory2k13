@@ -14,7 +14,9 @@ public class Candidate {
 	private int gain;
     @XmlTransient
 	private LinkedList<Flight> path;
-	
+
+    private Flight secondToLast;
+
 	public Candidate() {
 		this.gain = 0;
 		this.path = new LinkedList<Flight>();
@@ -28,10 +30,23 @@ public class Candidate {
 	public void addLast(Flight f) {
 		if ( path.size() == 0
 				||  f.getStart()>= path.getLast().getEnd()) { // getLast()  est en O(1) car liste doublement chain�e
-			path.addLast(f);
+
+            if (path.size() > 0 ) secondToLast = path.getLast();
+
+            path.addLast(f);
 			gain+=f.getPrice();
 		}
 	}
+
+    @XmlTransient
+    public Flight getLast() {
+        return this.path.getLast();
+    }
+
+    @XmlTransient
+    public Flight getSecondToLast() {
+        return this.secondToLast;
+    }
 
 	public int getGain() {
 		return gain;
@@ -65,6 +80,12 @@ public class Candidate {
 		sb.append(" ]");
 		return sb.toString();
 	}
+
+    public boolean equals(Object o) {
+        if (o instanceof Candidate) {
+           return (((Candidate) o).getPath().equals(this.getPath()));
+        }  else return super.equals(o);
+    }
 
     @XmlElement(name = "path")
     public List<String> getJSONPath() {

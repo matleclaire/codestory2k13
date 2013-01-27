@@ -55,5 +55,13 @@ public class Flight {
 	public int getEnd() {
 		return start+time;
 	}
+
+    public boolean equals(Object o) {
+        if (o instanceof Flight) {
+            return name.equals(((Flight) o).getName());
+        } else {
+            return false;
+        }
+    }
 	
 }
