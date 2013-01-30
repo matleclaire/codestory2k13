@@ -1,7 +1,5 @@
 package fr.mleclaire.java.codestory.jajascript;
 
-
-
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;

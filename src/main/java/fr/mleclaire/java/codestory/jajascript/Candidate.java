@@ -3,44 +3,41 @@ package fr.mleclaire.java.codestory.jajascript;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 @XmlRootElement
-public class Candidate {
+public class Candidate implements Comparable<Candidate> {
     @XmlElement
 	private int gain;
     @XmlTransient
-	private LinkedList<Flight> path;
+	private ArrayList<String> path; // ArrayList better than LinkedList when using clone 
 
     private Flight secondToLast;
+    private Flight last;
 
 	public Candidate() {
 		this.gain = 0;
-		this.path = new LinkedList<Flight>();
+		this.path = new ArrayList<String>();
 	}
-	
-	public Candidate(int gain, LinkedList<Flight> path) {
-		this.gain = gain;
-		this.path = path;
-	}
+
 
 	public void addLast(Flight f) {
-		if ( path.size() == 0
-				||  f.getStart()>= path.getLast().getEnd()) { // getLast()  est en O(1) car liste doublement chain�e
+		if ( last == null
+				||  f.getStart()>= last.getEnd()) {
 
-            if (path.size() > 0 ) secondToLast = path.getLast();
+            if (last != null ) secondToLast = last;
 
-            path.addLast(f);
+            path.add(f.getName());
 			gain+=f.getPrice();
+            last = f;
 		}
 	}
 
     @XmlTransient
     public Flight getLast() {
-        return this.path.getLast();
+        return last;
     }
 
     @XmlTransient
@@ -51,21 +48,26 @@ public class Candidate {
 	public int getGain() {
 		return gain;
 	}
-	
+
 	public void removeLast() {
-		gain-=path.getLast().getPrice();
-		path.removeLast();
+		gain-=last.getPrice();
+		path.remove(path.size()-1);
+        last = secondToLast;
 	}
 	
-	public LinkedList<Flight> getPath() {
+	public ArrayList<String> getPath() {
 		return path;
 	}
-
+    
 	@Override
     public Candidate clone() {
 		Candidate c = new Candidate();
 		c.gain = this.gain;
-		c.path = (LinkedList<Flight>) this.path.clone();
+		c.path = (ArrayList<String>)path.clone();//new ArrayList(c.path.size());
+    //    c.path = new LinkedList<Flight>();
+    //    c.path.addAll(this.path);
+        c.secondToLast = this.secondToLast;
+        c.last = last;
 		return c;
 	}
 
@@ -74,25 +76,53 @@ public class Candidate {
 		StringBuilder sb= new StringBuilder();
 		sb.append(gain);
 		sb.append(" [");
-		for (Flight f : path) {
-			sb.append(f.getName()).append(" ");
+		for (String f : path) {
+			sb.append(f).append(" ");
 		}
 		sb.append(" ]");
 		return sb.toString();
 	}
 
+    /**
+     * Candidates are equals if having same Gain and same last flight
+     */
     public boolean equals(Object o) {
         if (o instanceof Candidate) {
-           return (((Candidate) o).getPath().equals(this.getPath()));
+           return ((Candidate) o).getGain()  == this.getGain() && (((Candidate) o).getLast().equals(this.getLast()));
         }  else return super.equals(o);
     }
 
     @XmlElement(name = "path")
     public List<String> getJSONPath() {
         List<String> jsonPath = new ArrayList<String>();
-        for (Flight f : this.path) {
-            jsonPath.add(f.getName());
+        for (String f : this.path) {
+            jsonPath.add(f);
         }
         return jsonPath;
+    }
+
+    /**
+     * Sort Candidate 
+     */
+    @Override
+    public int compareTo(Candidate c) {
+        // equals (or worse than "c")
+        if ( this.equals(c)
+             || (
+                path.size() > 1 && c.getPath().size() > 1
+                && secondToLast.equals(c.getSecondToLast())
+                && gain < c.getGain()  && last.getEnd() >= c.getLast().getEnd()
+                )
+
+        ) {
+
+            return 0; // Return 0 to not add element to the set 
+        }
+        // Compare
+        else if (( path.size() > 1 && c.getPath().size() > 1 && secondToLast.equals(c.getSecondToLast()) && gain > c.getGain() ) ) {
+            return -1;
+        }  else {
+            return 1;
+        }
     }
 }

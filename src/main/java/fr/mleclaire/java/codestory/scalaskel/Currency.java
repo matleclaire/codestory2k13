@@ -45,7 +45,7 @@ public class Currency {
         return exchange(c, RATE.length-1);
     }
 
-    // Recursive way
+    // Recursive way. 
     private static List<Currency> exchange(Currency c, int ind) {
         List<Currency> result = new LinkedList<Currency>();
         // Stop condition

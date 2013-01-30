@@ -1,164 +1,117 @@
 package fr.mleclaire.java.codestory.jajascript;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 
 public class Jajascript {
 	
-	public static int minStartTime;
-	public static int maxEndTime;
+	public static int maxStartTime;
+    public static Candidate best;
 	
-
-	/**
+    /**
 	 * retourne une liste des vols triés par (heure,taux de rendement)
 	 * @param list
 	 * @return
 	 */
-	private static List<Flight> sort(List<Flight> list) {
-		LinkedList<Flight> sortedList = new LinkedList<Flight>();
-		for (Flight f : list) {
-			if (sortedList.size() == 0)  {
-				minStartTime = f.getStart();
-				maxEndTime = f.getStart();
-				sortedList.add(f);
-			}
-			else {
-				// Ajout en tete
-				if (f.getStart() < minStartTime) { 
-					sortedList.addFirst(f);
-					minStartTime = f.getStart();
-				} 
-				// Ajout en queue
-				else if (f.getStart() > maxEndTime) {
-					sortedList.addLast(f);
-					maxEndTime = f.getStart();
-				} 
-				// Ajout au milieu
-				else { 
-					for (ListIterator<Flight> it = sortedList.listIterator(); it.hasNext();){
-						Flight f2 = it.next();
-						// Le vol commence avant 
-						if (f.getStart()< f2.getStart()) {
-							it.set(f);
-							it.add(f2); 
-							break; 
-						} 
-						// Le vol commence à la même heure
-						else if (f.getStart() ==  f2.getStart()) {
-							if (f.getPrice() > f2.getPrice()) {
-								it.set(f);
-								it.add(f2);
-							} else {
-								it.add(f);
-							}
-							break;
-                        // Le vol commence pendant
-						} else if (f.getStart() >  f2.getStart() && ! it.hasNext() ) {
-                            it.add(f);
-                            break;
-                        }
-					}
-				}
-			}
-		}
-		
-		return sortedList;
-	}
-	
 	public static Candidate optimize(List<Flight> list) {
-		list = sort(list);     // On trie par ordre croissant les vols
-		List<Candidate> candList = new LinkedList<Candidate>();
-		Candidate best = null;
-		for (Flight f : list) {
-			if (candList.size() == 0) {
-				best = new Candidate();
-				best.addLast(f);
-				candList.add(best);	
-			} else {
-              //  System.out.println("size :"+candList.size());
-				for (ListIterator<Candidate> it = candList.listIterator(); it.hasNext();) {
-					Candidate c = it.next();
+		Collections.sort(list);
 
-                    // Si le candidat n'est plus considéré comme solution possible, on le supprime
-                    if (c.getGain() < best.getGain()
-                            && c.getPath().getLast().getEnd() >= best.getPath().getLast().getEnd())    {
-               //         it.remove();
-                    }
-                    // Sinon si F peut être ajouté à la fin du candidat, on l'ajoute
-                    if (c.getPath().getLast().getEnd() <= f.getStart() ) {
-						c.addLast(f);
+        best = null;
+
+        TreeSet<Candidate> candList = new TreeSet<Candidate>();
+
+        Iterator<Flight>itFlight = list.iterator();
+        int count = 0;
+        while (itFlight.hasNext()) {
+            Flight f = itFlight.next();
+            count++;
+            if (candList.size() == 0) {
+                best = new Candidate();
+                best.addLast(f);
+                candList.add(best);
+            } else {
+                // Just for debug
+                if (count%1000 == 0) System.out.println(count+" size :"+candList.size());
+
+                List<Candidate> toAdd = new LinkedList<Candidate>();
+                for (Iterator<Candidate> it = candList.iterator(); it.hasNext();) {
+                    Candidate c = it.next();
+
+                    // Si F peut être ajouté à la fin du candidat, on l'ajoute
+                    if (c.getLast().getEnd() <= f.getStart() ) {
+                        c.addLast(f);
                         if (c.getGain() > best.getGain() ) {
                             best = c;
                         }
-					}
-                    // Sinon on duplique le candidat et on essaie d'insérer le vol dedans (en supprimant ceux qui gène)
+                    }
+                    // Sinon on duplique le candidat et on essaie d'insérer le vol dedans (à la place du dernier element)
                     else {
-						Candidate c2 = c.clone();
+                        //  avant de dupliquer, on teste sans cloner l'objet pour savoir si ça vaut le coup de dépenser de l'énergie à cloner (car couteux!!) :)
+                        int gain = c.getGain();
+                        int end = c.getLast().getEnd();
 
-						while (c2.getPath().size() > 0 &&  c2.getPath().getLast().getEnd() > f.getStart() ) {
-							c2.removeLast();
-						}
-						c2.addLast(f);
-
-
-                        // On garde la solution que  si elle n'existe pas déjà déjà dans la liste
-
-                        if (c2.getPath().getLast().getEnd() <= c.getPath().getLast().getEnd() || c2.getGain() >= c.getGain() )  {
-                            boolean found = false;
-                            for(Candidate current : candList) {
-                                if ((c2.equals(current))
-                                        || (c2.getPath().size() > 1 && current.getPath().size() > 1
-                                            && c2.getSecondToLast().equals(current.getSecondToLast())
-                                            && c2.getGain() < current.getGain()  && c2.getLast().getEnd() >= current.getLast().getEnd()
-                                            )
-                                        ) {
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                if (c2.getGain() >= c.getGain() ) {        // On trie pour avoir le meilleur gain des 2 en premier (pour le clean up)
-                                    it.set(c2);
-                                    it.add(c);
-                                } else {
-                                    it.add(c2);
-                                }
-                                if (c2.getGain() >= best.getGain()  ) {
-                                    best = c2;
-                                }
+                        if (c.getPath().size() > 0 &&  c.getLast().getEnd() > f.getStart()) {
+                           // c2.removeLast();
+                            gain-= c.getLast().getPrice();
+                            if (c.getSecondToLast() != null) {
+                                end = c.getSecondToLast().getEnd();
+                            }  else {
+                                end = 0;
                             }
                         }
-					}
-				}
+                        gain += f.getPrice();
+                        end = f.getEnd();
 
-                // clean up
-                Candidate last = null;
-                for (ListIterator<Candidate> it = candList.listIterator(); it.hasNext();) {
-                    Candidate c = it.next();
-                    if (last == null) {
-                        last = c;
-                    } else {
-                       if (c.getPath().size() > 1 && best.getPath().size() > 1
-                           && c.getSecondToLast().equals(best.getSecondToLast())
-                           && c.getPath().getLast().getEnd() >= best.getPath().getLast().getEnd() ) {
-                           if (c.getGain() < best.getGain()) {
-                                it.remove();
-                           }
+                        // Si le candidat est retenu ( = meilleur gain que le best OU plus petit)
+                        if (gain >= best.getGain()  || (best.getPath().size() > 0 && end <= best.getLast().getEnd()))  {
 
-                       } else    {
-                            last = c;
-                       }
+                            Candidate c2 = c.clone();
+                            if (c.getPath().size() > 0 &&  c.getLast().getEnd() > f.getStart()) {
+                                c2.removeLast();
+                            }
+                            c2.addLast(f);
+
+                            if (!toAdd.contains(c2) && !candList.contains(c2)) {
+                                if (c2.getGain() > best.getGain()) {
+                                    best = c2;
+                                }
+                                toAdd.add(c2);
+                            }
+                        }
                     }
+                }
 
+                // Add new candidates
+                if (toAdd.size() > 0) {
+                    candList.addAll(toAdd);
                 }
 
 
-			}
-		}
-		return best;
-	}
+                // clean up bad candidates
+                 Iterator<Candidate> it = candList.iterator();
+                 Candidate last = it.next();
+                 while(it.hasNext()) {
+                     Candidate c = it.next();
+                     // Magic. Don't touch! 
+                     if (c.equals(last)
+                        ||(  c.getPath().size() > 1 && last.getPath().size() > 1   // Compare to last
+                             && c.getSecondToLast().equals(last.getSecondToLast())
+                             && c.getGain() < last.getGain()
+                             && c.getLast().getEnd() >= last.getLast().getEnd()
+                             )
+                        ||(  c.getPath().size() > 1 && best.getPath().size() > 1  // Compare to Best
+                             && c.getSecondToLast().equals(best.getSecondToLast())
+                             && c.getGain() < best.getGain()
+                             && c.getLast().getEnd() >= best.getLast().getEnd()
+                        )) {
+                         it.remove();
+                     } else {
+                         last = c;
+                     }
+                 }
+            }
+        }
+        return best;
+    }
+           
 }

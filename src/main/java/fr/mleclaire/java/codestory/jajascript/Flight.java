@@ -2,11 +2,8 @@ package fr.mleclaire.java.codestory.jajascript;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
 //@XmlRootElement
-public class Flight {
+public class Flight implements Comparable<Flight>{
   //  @XmlElement(name = "VOL")
     @JsonProperty("VOL")
 	private String name;
@@ -19,7 +16,7 @@ public class Flight {
  //   @XmlElement(name = "PRIX")
     @JsonProperty("PRIX")
     private int price;
-	
+
     public Flight() {
 
     }
@@ -63,5 +60,15 @@ public class Flight {
             return false;
         }
     }
-	
+
+    @Override
+    public int compareTo(Flight f) {
+        if ( start < f.getStart() ) {
+            return -1;
+        } else if (start > f.getStart()  || (start == f.getStart() && price >= f.getPrice())) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 }
