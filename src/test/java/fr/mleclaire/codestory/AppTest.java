@@ -222,6 +222,11 @@ public class AppTest {
       assertThat(c.getGain()).isEqualTo(166953);
   }
 
+    @Test
+    public void should_accept_last_question() {
+        String result = service.path("/").queryParam("q","Souhaites-tu-participer-a-la-suite-de-Code-Story(OUI/NON)").accept("text/plain").get(String.class);
+        assertThat(result).isEqualTo("OUI");
+    }
 
 }
 
