@@ -1,5 +1,6 @@
-package fr.mleclaire.java.codestory;
+package fr.mleclaire.codestory.Resources;
 
+import fr.mleclaire.codestory.calc.Calculator;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;

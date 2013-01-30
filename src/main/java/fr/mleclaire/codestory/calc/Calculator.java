@@ -1,10 +1,7 @@
-package fr.mleclaire.java.codestory;
+package fr.mleclaire.codestory.calc;
 
 
 import net.java.dev.eval.Expression;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
 
 public class Calculator {
 

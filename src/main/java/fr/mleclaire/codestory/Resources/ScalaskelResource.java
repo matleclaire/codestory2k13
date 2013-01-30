@@ -1,5 +1,7 @@
-package fr.mleclaire.java.codestory.scalaskel;
+package fr.mleclaire.codestory.Resources;
 
+
+import fr.mleclaire.codestory.scalaskel.Currency;
 
 import javax.ws.rs.*;
 import java.util.Collection;

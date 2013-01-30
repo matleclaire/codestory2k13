@@ -1,4 +1,4 @@
-package fr.mleclaire.java.codestory.jajascript;
+package fr.mleclaire.codestory.jajascript;
 
 import java.util.*;
 

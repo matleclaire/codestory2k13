@@ -1,4 +1,4 @@
-package fr.mleclaire.java.codestory;
+package fr.mleclaire.codestory;
 
 import org.glassfish.grizzly.filterchain.FilterChain;
 import org.glassfish.grizzly.http.*;
@@ -20,11 +20,7 @@ public class TrafficMonitor {
 
     static final Logger logger = LoggerFactory.getLogger(TrafficMonitor.class);
 
-
     public static void log(HttpServer httpServer) {
-
-
-
 
         httpServer.getServerConfiguration().addHttpHandler(new StaticHttpHandler());
         FilterChain filterChain = httpServer.getListener("grizzly").getFilterChain();

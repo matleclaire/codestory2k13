@@ -1,4 +1,4 @@
-package fr.mleclaire.java.codestory.scalaskel;
+package fr.mleclaire.codestory.scalaskel;
 
 import java.util.*;
 import javax.xml.bind.annotation.XmlElement;

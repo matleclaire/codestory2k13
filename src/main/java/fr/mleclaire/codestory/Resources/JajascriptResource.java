@@ -1,16 +1,14 @@
-package fr.mleclaire.java.codestory.jajascript;
+package fr.mleclaire.codestory.Resources;
 
-import org.codehaus.jackson.JsonParseException;
+import fr.mleclaire.codestory.jajascript.Candidate;
+import fr.mleclaire.codestory.jajascript.Flight;
+import fr.mleclaire.codestory.jajascript.Jajascript;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.codehaus.jettison.json.JSONObject;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 @Path("jajascript")

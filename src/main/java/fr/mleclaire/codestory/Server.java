@@ -1,14 +1,10 @@
-package fr.mleclaire.java.codestory;
+package fr.mleclaire.codestory;
 import com.sun.jersey.api.container.grizzly2.GrizzlyServerFactory;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 /**

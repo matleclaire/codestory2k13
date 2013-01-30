@@ -1,4 +1,4 @@
-package fr.mleclaire.java.codestory;
+package fr.mleclaire.codestory;
 
 import java.io.IOException;
 
