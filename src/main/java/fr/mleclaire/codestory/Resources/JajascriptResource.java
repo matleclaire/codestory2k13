@@ -1,4 +1,4 @@
-package fr.mleclaire.codestory.Resources;
+package fr.mleclaire.codestory.resources;
 
 import fr.mleclaire.codestory.jajascript.Candidate;
 import fr.mleclaire.codestory.jajascript.Flight;
