@@ -1,20 +1,18 @@
-package fr.mleclaire.java.codestory;
+package fr.mleclaire.codestory;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import fr.mleclaire.java.codestory.jajascript.Candidate;
-import fr.mleclaire.java.codestory.jajascript.Flight;
+import fr.mleclaire.codestory.Server;
+import fr.mleclaire.codestory.jajascript.Candidate;
+import fr.mleclaire.codestory.jajascript.Flight;
 import org.junit.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -212,7 +210,7 @@ public class AppTest {
 
   @Test
   public void should_optimize_jajascript_biiig_payload() throws IOException {
-      BufferedReader in = new BufferedReader(new FileReader("bigPayload"));  // 50 000 Flights
+      BufferedReader in = new BufferedReader(new FileReader(getClass().getResource( "/bigPayload").getFile()));  // 50 000 Flights
 
       String payload =  in.readLine();
       ClientResponse response = service.path("/jajascript/optimize").type("application/x-www-form-urlencoded").post(ClientResponse.class, payload);

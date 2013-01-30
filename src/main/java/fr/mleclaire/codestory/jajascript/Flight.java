@@ -2,18 +2,13 @@ package fr.mleclaire.codestory.jajascript;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-//@XmlRootElement
 public class Flight implements Comparable<Flight>{
-  //  @XmlElement(name = "VOL")
     @JsonProperty("VOL")
 	private String name;
-  //  @XmlElement(name = "DEPART")
     @JsonProperty("DEPART")
 	private int start;
- //   @XmlElement(name = "DUREE")
     @JsonProperty("DUREE")
     private int time;
- //   @XmlElement(name = "PRIX")
     @JsonProperty("PRIX")
     private int price;
 

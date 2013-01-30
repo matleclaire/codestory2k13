@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Log HTTP traffic (request and response) 
  * 
- *  @author test
+ *  @author mathieu
  */
 
 

@@ -13,6 +13,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Main resource at "/" URI (root)
+ * @author mathieu
+ */
 @Path("/")
 public class MainResource {
 
@@ -36,7 +40,7 @@ public class MainResource {
         if (this.param.containsKey(q)) {
             return Response.ok(param.getString(q),"text/plain").build();
 
-        } else if(format(q).matches(VALID_EXP_PATTERN)) {
+        } else if(format(q).matches(VALID_EXP_PATTERN) && !"".equals(q)) {
             return Response.ok(Calculator.compute(format(q)),"text/plain").build();
 
         }else {

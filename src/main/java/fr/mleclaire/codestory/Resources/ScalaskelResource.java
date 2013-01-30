@@ -1,10 +1,15 @@
 package fr.mleclaire.codestory.Resources;
 
-
 import fr.mleclaire.codestory.scalaskel.Currency;
 
 import javax.ws.rs.*;
 import java.util.Collection;
+
+/**
+ * Scalaskel challenge at "/scalaskel" URI
+ *
+ * @author mathieu
+ */
 
 @Path("scalaskel")
 public class ScalaskelResource {

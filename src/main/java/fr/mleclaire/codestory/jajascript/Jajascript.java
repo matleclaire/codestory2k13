@@ -2,70 +2,65 @@ package fr.mleclaire.codestory.jajascript;
 
 import java.util.*;
 
-
+/**
+ * <b>Algorithm</b>
+ *
+ * First, we sort Flights by asc order (start time) with a TreeSet.
+ * We iterate on it  and we build a list of candidates.
+ * After each flight, we filter candidates to keep only potentiels solutions and remove poor candidates
+ *
+ *
+ */
 public class Jajascript {
-	
-	public static int maxStartTime;
-    public static Candidate best;
-	
+
+
     /**
-	 * retourne une liste des vols triés par (heure,taux de rendement)
-	 * @param list
-	 * @return
-	 */
+     * Find the ultimate response for jajascript airLines
+     * @param list, payload (not sorted)
+     * @return solution
+     */
 	public static Candidate optimize(List<Flight> list) {
 		Collections.sort(list);
 
-        best = null;
+        Candidate best = null;
 
         TreeSet<Candidate> candList = new TreeSet<Candidate>();
 
         Iterator<Flight>itFlight = list.iterator();
-        int count = 0;
         while (itFlight.hasNext()) {
             Flight f = itFlight.next();
-            count++;
             if (candList.size() == 0) {
                 best = new Candidate();
                 best.addLast(f);
                 candList.add(best);
             } else {
-                // Just for debug
-                if (count%1000 == 0) System.out.println(count+" size :"+candList.size());
 
                 List<Candidate> toAdd = new LinkedList<Candidate>();
                 for (Iterator<Candidate> it = candList.iterator(); it.hasNext();) {
                     Candidate c = it.next();
 
-                    // Si F peut être ajouté à la fin du candidat, on l'ajoute
+                    // if F can be add in queue, we do!
                     if (c.getLast().getEnd() <= f.getStart() ) {
                         c.addLast(f);
                         if (c.getGain() > best.getGain() ) {
                             best = c;
                         }
                     }
-                    // Sinon on duplique le candidat et on essaie d'insérer le vol dedans (à la place du dernier element)
+                    // else, candidate is duplicated and we try to insert f inside (at the end)
                     else {
-                        //  avant de dupliquer, on teste sans cloner l'objet pour savoir si ça vaut le coup de dépenser de l'énergie à cloner (car couteux!!) :)
+                        //  before duplicate, we try without cloning (because clone is expensive! $$$ )
                         int gain = c.getGain();
-                        int end = c.getLast().getEnd();
+                        int end ;
 
                         if (c.getPath().size() > 0 &&  c.getLast().getEnd() > f.getStart()) {
-                           // c2.removeLast();
                             gain-= c.getLast().getPrice();
-                            if (c.getSecondToLast() != null) {
-                                end = c.getSecondToLast().getEnd();
-                            }  else {
-                                end = 0;
-                            }
                         }
                         gain += f.getPrice();
                         end = f.getEnd();
 
-                        // Si le candidat est retenu ( = meilleur gain que le best OU plus petit)
+                        // if candidate seems to be lucky ( aka best gain and smallest or equal path)
                         if (gain >= best.getGain()  || (best.getPath().size() > 0 && end <= best.getLast().getEnd()))  {
-
-                            Candidate c2 = c.clone();
+                            Candidate c2 = c.clone();   // we clone it !
                             if (c.getPath().size() > 0 &&  c.getLast().getEnd() > f.getStart()) {
                                 c2.removeLast();
                             }
@@ -87,7 +82,7 @@ public class Jajascript {
                 }
 
 
-                // clean up bad candidates
+                // clean up poor candidates
                  Iterator<Candidate> it = candList.iterator();
                  Candidate last = it.next();
                  while(it.hasNext()) {

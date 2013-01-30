@@ -1,31 +1,30 @@
 package fr.mleclaire.codestory.jajascript;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement
 public class Candidate implements Comparable<Candidate> {
-    @XmlElement
+    @JsonProperty("gain")
 	private int gain;
-    @XmlTransient
+    @JsonProperty("path")
 	private ArrayList<String> path; // ArrayList better than LinkedList when using clone 
 
-    private Flight secondToLast;
-    private Flight last;
+    @JsonIgnore
+    private Flight secondToLast, last;
 
 	public Candidate() {
 		this.gain = 0;
 		this.path = new ArrayList<String>();
 	}
 
-
 	public void addLast(Flight f) {
-		if ( last == null
-				||  f.getStart()>= last.getEnd()) {
-
+		if ( last == null ||  f.getStart()>= last.getEnd()) {
             if (last != null ) secondToLast = last;
 
             path.add(f.getName());
@@ -34,12 +33,11 @@ public class Candidate implements Comparable<Candidate> {
 		}
 	}
 
-    @XmlTransient
+
     public Flight getLast() {
         return last;
     }
 
-    @XmlTransient
     public Flight getSecondToLast() {
         return this.secondToLast;
     }
@@ -89,15 +87,6 @@ public class Candidate implements Comparable<Candidate> {
         if (o instanceof Candidate) {
            return ((Candidate) o).getGain()  == this.getGain() && (((Candidate) o).getLast().equals(this.getLast()));
         }  else return super.equals(o);
-    }
-
-    @XmlElement(name = "path")
-    public List<String> getJSONPath() {
-        List<String> jsonPath = new ArrayList<String>();
-        for (String f : this.path) {
-            jsonPath.add(f);
-        }
-        return jsonPath;
     }
 
     /**

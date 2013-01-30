@@ -11,6 +11,11 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Jajascript challenge at "/jajascript" URI
+ *
+ * @author mathieu
+ */
 @Path("jajascript")
 public class JajascriptResource {
 
